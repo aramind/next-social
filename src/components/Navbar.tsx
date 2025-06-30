@@ -20,10 +20,10 @@ const Navbar = () => {
         </Link>
       </div>
       {/* center */}
-      <div className="hidden md:flex w-[50%]">
+      <div className="hidden md:flex w-[50%] text-sm justify-between">
         {/* links */}
-        <div className="flex gap-6 text-gray-600 text-sm">
-          <Link href="/" className="flex gap-2 items-center">
+        <div className="flex gap-6 text-gray-600 items-center">
+          <Link href="/" className="flex gap-2 ">
             <Image
               src="/home.png"
               alt="Home page"
@@ -54,7 +54,18 @@ const Navbar = () => {
             <span>Stories</span>
           </Link>
         </div>
+        <div className="hidden xl:flex gap-2 p-2 bg-slate-100 items-center rounded">
+          <input
+            type="text"
+            placeholder="search..."
+            className="bg-transparent outline-none"
+          />
+          <div className="w-[14px]">
+            <Image src="/search.png" alt="" width={14} height={14} />
+          </div>
+        </div>
       </div>
+
       {/* right */}
       <div className="w-[30%] flex items-center gap-4 xl:gap-8 justify-end">
         <ClerkLoading>
