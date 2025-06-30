@@ -6,7 +6,7 @@ const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   console.log(isOpen);
   return (
-    <div>
+    <div className="md:hidden">
       <div
         className="flex flex-col gap-1 cursor-pointer"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -17,7 +17,7 @@ const MobileMenu = () => {
           } origin-left`}
         />
         <div
-          className={`"w-6 h-1 bg-blue-500 rounded-sm ${
+          className={`w-6 h-1 bg-blue-500 rounded-sm ${
             isOpen ? "opacity-0" : ""
           }`}
         />
