@@ -14,21 +14,25 @@ datasource db {
 }
 
 model User {
-  id          String     @id
-  name        String     @unique
-  avatar      String?
-  surname     String?
-  description String?
-  city        String?
-  school      String?
-  work        String?
-  website     String?
-  createdAt   DateTime   @default(now())
-  post        Post[]
-  likes       Like[]
-  comments    Comment[]
-  followers   Follower[] @relation("UserFollowers")
-  followings  Follower[] @relation("UserFollowings")
+  id                    String          @id
+  name                  String          @unique
+  avatar                String?
+  surname               String?
+  description           String?
+  city                  String?
+  school                String?
+  work                  String?
+  website               String?
+  createdAt             DateTime        @default(now())
+  post                  Post[]
+  likes                 Like[]
+  comments              Comment[]
+  followers             Follower[]      @relation("UserFollowers")
+  followings            Follower[]      @relation("UserFollowings")
+  followRequestSent     FollowRequest[] @relation("FollowRequestsSent")
+  followRequestReceived FollowRequest[] @relation("FollowRequestsReceived")
+  blocksSent            Block[]         @relation("BlocksSent")
+  blocsReceived         Block[]         @relation("BlocksReceived")
 }
 
 model Post {
@@ -49,7 +53,7 @@ model Comment {
   updatedAt DateTime @updatedAt
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
-  Post      Post?    @relation(fields: [postId], references: [id])
+  post      Post?    @relation(fields: [postId], references: [id])
   postId    Int?
   likes     Like[]
 }
@@ -59,9 +63,9 @@ model Like {
   createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int?
-  Comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int?
 }
 
@@ -72,4 +76,27 @@ model Follower {
   followerId  String
   following   User?    @relation("UserFollowings", fields: [followingId], references: [id])
   followingId String?
+}
+
+model FollowRequest {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  sender     User     @relation("FollowRequestsSent", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String
+  receiver   User     @relation("FollowRequestsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String
+
+  @@unique([senderId, receiverId])
+}
+
+model Block {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  blocker   User?   @relation("BlocksSent", fields: [blockerId], references: [id])
+  blockerId String?
+  User      User?   @relation("BlocksReceived", fields: [blockedId], references: [id])
+  blockedId String?
+
+  @@unique([blockerId, blockedId])
 }
