@@ -33,6 +33,7 @@ model User {
   followRequestReceived FollowRequest[] @relation("FollowRequestsReceived")
   blocksSent            Block[]         @relation("BlocksSent")
   blocsReceived         Block[]         @relation("BlocksReceived")
+  stories               Story[]
 }
 
 model Post {
@@ -99,4 +100,13 @@ model Block {
   blockedId String?
 
   @@unique([blockerId, blockedId])
+}
+
+model Story {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  img       String
+  User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
 }
